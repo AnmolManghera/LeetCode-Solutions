@@ -1,27 +1,35 @@
 class Solution {
 public:
-    int f(int i ,int j ,string &p,string &s ,vector<vector<int>>&dp){
-        if(i == 0 && j == 0) return true;
-        if(i == 0 && j > 0) return false;
-        if(j == 0 && i>0){
-            for(int x = 1 ; x <=i  ;x++){
-                if(p[x-1]!='*'){
-                    return false;
-                }
+    bool func(string &s, string &p, int i, int j,int m,int n,vector<vector<int>>&dp){
+        if(i == m && j == n) return true;
+        if(i == m){
+            for(int k = j ; k < n ; k++){
+                if(p[k] != '*') return false;
             }
             return true;
         }
-        if(dp[i][j]!=-1) return dp[i][j];
-        if(s[j-1]==p[i-1] || p[i-1]=='?') return dp[i][j] = f(i-1,j-1,p,s,dp);
-        if(p[i-1]=='*'){
-            return dp[i][j] = f(i-1,j,p,s,dp) || f(i,j-1,p,s,dp);    
+        if(j == n && i < m) return false;
+        if(dp[i][j] != -1) return dp[i][j];
+        if(s[i] == p[j] || p[j] == '?') return dp[i][j] = func(s,p,i+1,j+1,m,n,dp);
+        if(p[j] == '*'){
+            return dp[i][j] = func(s,p,i+1,j,m,n,dp) || func(s,p,i,j+1,m,n,dp);
         }
         return false;
     }
     bool isMatch(string s, string p) {
-        int n = p.length();
-        int m = s.length();
-        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
-        return f(n,m,p,s,dp);
+        int m = s.length(), n = p.length();
+        vector<vector<int>>dp(m+1,vector<int>(n+1,0));
+        dp[m][n] = 1;
+        for(int j = n-1 ; j >= 0 ; j--){
+            if(p[j] != '*') break;
+            dp[m][j] = 1;
+        }
+        for(int i = m-1 ;i >= 0 ; i--){
+            for(int j = n-1 ; j >= 0 ; j--){
+                if(s[i] == p[j] || p[j] == '?') dp[i][j] = dp[i+1][j+1];
+                if(p[j] == '*') dp[i][j] = dp[i+1][j] || dp[i][j+1];
+            }
+        }
+        return dp[0][0];
     }
 };
