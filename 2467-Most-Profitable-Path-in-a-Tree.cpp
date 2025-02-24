@@ -3,7 +3,6 @@ public:
     bool dfs(vector<vector<int>>& adj, vector<int>&path, int curr, int end, vector<int>&vis){
         path.push_back(curr);
         if(curr == end){
-            // path.push_back(end);
             return true;
         }
         vis[curr] = 1;
