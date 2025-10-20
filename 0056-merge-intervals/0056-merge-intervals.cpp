@@ -6,7 +6,7 @@ public:
         vector<vector<int>>ans;
         ans.push_back(intervals[0]);
         for(int i = 1 ; i < n ; i++) {
-            if(intervals[i][0] <= ans.back()[1] && (intervals[i][1] > ans.back()[1])){
+            if(intervals[i][0] <= ans.back()[1]){
                 ans[ans.size()-1][1] = intervals[i][1];
             }
             else if(intervals[i][0] > ans.back()[1]){
