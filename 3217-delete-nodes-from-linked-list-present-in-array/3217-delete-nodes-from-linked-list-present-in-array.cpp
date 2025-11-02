@@ -21,6 +21,7 @@ public:
                 ListNode* next = curr->next;
                 prev->next = next;
                 curr->next = NULL;
+                delete curr;
                 curr = prev->next;
             }
             else {  
@@ -29,6 +30,8 @@ public:
             }
 
         }
-        return dummy->next;
+        ListNode* ans = dummy->next;
+        delete dummy;
+        return ans;
     }
 };
